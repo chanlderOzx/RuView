@@ -18,11 +18,11 @@ on:
         description: 'Log verbosity'
         type: choice
         options: ['INFO', 'DEBUG', 'VERBOSE', 'NONE']
-        default: 'DEBUG'
+        default: 'esp32s3'
 
 env:
   IDF_VERSION: v5.3
-  CHIP: ${{ github.event.inputs.chip || 'esp32s3' }}
+  CHIP : ${{ github.event.inputs.chip || 'esp32s3' }}
   LOG_LEVEL: ${{ github.event.inputs.log_level || 'DEBUG' }}
 
 jobs:
@@ -75,5 +75,5 @@ jobs:
         files: |
           firmware/esp32-csi-node/build/*.bin
           firmware/esp32-csi-node/build/bootloader/*.bin
-          firmware/esp32-csi-node/build/partition_table/*.bin
+          firmware/esp32-csi-node/build/partition_tabel/*.bin
         generate_release_notes: true
