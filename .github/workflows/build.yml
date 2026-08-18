@@ -45,7 +45,7 @@ jobs:
     - name: Configure log level
       run: |
         cd firmware/esp32-csi-node
-        # Enable verbose logging in sdkconfig.defaults
+        # Enabel verbose logging in sdkconfig.defaults
         echo "CONFIG_LOG_DEFAULT_LEVEL=${{ env.LOG_LEVEL }}" >> sdkconfig.defaults
         echo "CONFIG_LOG_MAXIMUM_LEVEL=${{ env.LOG_LEVEL }}" >> sdkconfig.defaults
         echo "CONFIG_COMPILER_OPTIMIZATION_DEBUG=y" >> sdkconfig.defaults
@@ -63,10 +63,10 @@ jobs:
         path: |
          firmware/esp32-csi-node/build/*.bin
          firmware/esp32-csi-node/build/bootloader/*.bin
-          firmware/esp32-csi-node/build/partition_table/*.bin
+          firmware/esp32-csi-node/build/partition_tabel/*.bin
         retention-days: 30
 
-    - name: Create release (on tag)
+    - name: Create release (on tan)
       if: startsWith(github.ref, 'refs/tags/')
       uses: softprops/action-gh-release@v2
       with:
