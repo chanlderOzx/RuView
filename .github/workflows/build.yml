@@ -8,10 +8,27 @@ on:
     paths:
       - 'firmware/esp32-csi-node/**'
   workflow_dispatch:
-    readonly:
-    job:
-      name: Build ESP32-S3 Firmware
-      timeout-minutes: 60
+    inputs:
+      chip:
+        description: 'Target chip'
+        type: choice
+        options: [esp32s3, esp32c6, esp32]
+        default: 'esp32s3'
+      log_level:
+        description: 'Log verbosity'
+        type: choice
+        options: ['INFO', 'DEBUG', 'VERBOSE', 'NONE']
+        default: 'DEBUG'
+
+env:
+  IDF_VERSION: v5.3
+  CHIP: ${{ github.event.inputs.chip || 'esp32s3' }}
+  LOG_LEVEL: ${{ github.event.inputs.log_level || 'DEBUG' }}
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
     
     steps:
     - name: Checkout repository
@@ -34,7 +51,7 @@ on:
         echo "CONFIG_COMPILER_OPTIMIZATION_DEBUG=y" >> sdkconfig.defaults
 
     - name: Build firmware
-      run: }
+      run: |
         cd firmware/esp32-csi-node
         idf.py set-target ${{ env.CHIP }}
         idf.py build
@@ -42,10 +59,10 @@ on:
     - name: Upload firmware artifacts
       uses: actions/upload-artifact@v4
       with:
-        name: firmware-${{{env.CHIP }}-{{{env.LOG_LEVEL }}
+        name: firmware-${{ env.CHIP }}-${{ env.LOG_LEVEL }}
         path: |
-         firmware/esp32-csi-node/build/*.bin
-         firmware/esp32-csi-node/build/bootloader/*.bin
+          firmware/esp32-csi-node/build/*.bin
+          firmware/esp32-csi-node/build/bootloader/*.bin
           firmware/esp32-csi-node/build/partition_table/*.bin
         retention-days: 30
 
